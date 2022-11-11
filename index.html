@@ -1,3 +1,16 @@
-Test
+<!doctype html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="js/script.js"></script>
+</head>
 
-<script src="script.js"></script>
+<body>
+    <div id = "main">
+        <input type="file" id="inputFolder" webkitdirectory multiple onchange="uploadFiles(event)">
+
+        <!--<button id="uploadButton" onclick="uploadFiles()">upload</button>-->
+    </div>
+
+    <select id="filesList" multiple ondrop="drop(event)" ondragover="allowDrop(event)" size="100"> 
+    </select>
+</body>
