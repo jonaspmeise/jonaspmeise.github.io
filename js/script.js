@@ -1,37 +1,36 @@
 "use strict";
 
-function uploadFiles(event) {
-    const list = document.createElement('ul');
+class ImageFile {
+    constructor(file, filePath) {
+        this._file = file;
+        this._filePath = filePath;
+    }
+}
 
-    console.log(event);
+function uploadFiles(event) {
 
     Array.from(event.target.files).forEach(file => { 
-        console.log(file);
-
-        const listItem = document.createElement('li');
-        list.appendChild(listItem);
-
-        const image = document.createElement('img');
-        const url = URL.createObjectURL(file);;
-        image.src = url
-        image.height = 100;
-
-        listItem.appendChild(image);
-        console.log(image.src);
-
         let fileOption = document.createElement('option');
-        fileOption.value = file.webkitRelativePath;
+        fileOption.value = URL.createObjectURL(file);
         fileOption.innerHTML = file.webkitRelativePath;
 
         document.getElementById('filesList').appendChild(fileOption);
     });
 }
 
-function readFiles(source) {
+function updateImage(event) {
+    document.getElementById('previewImage').src = event.target.value;
+    convertToBase64String(event.target.value);
+}
+
+
+function convertToBase64String(imageBlob) {
+    console.log(imageBlob);
     let reader = new FileReader();
-    reader.onload = function (evt) {
-        console.log(evt.target.result);
+
+    reader.onload = function() {
+        console.log(reader.result);
     }
 
-    reader.readAsText(document.getElementById(source).files[0], 'UTF-8');
+    reader.readAsDataURL(imageBlob);
 }

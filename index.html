@@ -5,12 +5,20 @@
 </head>
 
 <body>
-    <div id = "main">
-        <input type="file" id="inputFolder" webkitdirectory multiple onchange="uploadFiles(event)">
+    <div id="main">
+        <input type="file" id="inputFolder"
+            webkitdirectory multiple 
+            onchange="uploadFiles(event)">
 
-        <!--<button id="uploadButton" onclick="uploadFiles()">upload</button>-->
+        <select id="filesList" 
+            multiple 
+            ondrop="drop(event)"
+            ondragover="allowDrop(event)" 
+            onchange="updateImage(event)"
+            size="10">
+            <!-- No options here - they are added when files are added during runtime-->
+        </select>
     </div>
 
-    <select id="filesList" multiple ondrop="drop(event)" ondragover="allowDrop(event)" size="100"> 
-    </select>
+    <img id="previewImage" height="500">
 </body>
