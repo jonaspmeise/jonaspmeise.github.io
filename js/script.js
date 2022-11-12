@@ -1,6 +1,7 @@
 "use strict";
 
-//import {TabulatorFull as Tabulator} from 'tabulator-tables';
+let database;
+
 
 const IMAGE_TYPES = {update: updateImage, extensions:['png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg']}
 const TABLE_TYPES = {update: updateCardTable, extensions:['xlsx']}
@@ -67,7 +68,6 @@ function updateCardTable(tempTable, elementId = 'cardTable') {
 
 function convertToBase64String(imageBlob) {
 
-    console.log(imageBlob);
     let reader = new FileReader();
 
     reader.onload = function() {
@@ -78,44 +78,53 @@ function convertToBase64String(imageBlob) {
 }
 
 function excelFileToJSON(file){
-    var reader = new FileReader();
+
+    let reader = new FileReader();
+
     reader.readAsBinaryString(file);
     reader.onload = (e) => {
-        var data = e.target.result;
-        var workbook = XLSX.read(data, {
+        let data = e.target.result;
+        let workbook = XLSX.read(data, {
             type : 'binary'
         });
-        var result = {};
-        //var firstSheetName = workbook.SheetNames[0];
-        console.log(workbook.SheetNames);
-        //reading only first sheet data
-        var jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[2]]);
-        //displaying the json result into HTML table
-        //displayJsonToHtmlTable(jsonData);
-        displayJsonToHtmlTable(jsonData);
+
+        let sheetnames = workbook.SheetNames;
+
+        sheetnames.forEach(sheetname => {
+            let switchButton = document.createElement('button');
+
+            switchButton.innerHTML = switchButton.name = sheetname;
+            switchButton.classList.add('tablinks');
+            switchButton.addEventListener('click', function() {renderTable(this.name)});
+
+            document.getElementById('worksheetTabs').appendChild(switchButton);
+        });
+
+        database = Object.fromEntries(
+            sheetnames.map(
+                sheetname => [sheetname, XLSX.utils.sheet_to_json(workbook.Sheets[sheetname])]));
+        renderTable('Karten');
     };
 }
 
 //Method to display the data in HTML Table
-function displayJsonToHtmlTable(jsonData){
-    var table = new Tabulator("#cardTable", {
-        height:205, // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
-        data:jsonData, //assign data to table
-        layout:"fitColumns", //fit columns to width of table (optional)
-        columns:[ //Define Table Columns
-            {title:"Name", field:"Name", width:150},
-            {title:"Level", field:"Level", hozAlign:"left", formatter:"progress"},
-            {title:"Kampfwert Color", field:"Kampfwert"},
-            {title:"Rüstung", field:"Rüstung"},
-            {title:"Anfaengeritem", field:"Anfaengeritem"},
-            {title:"Typ", field:"Typ"},
-            {title:"Häufigkeit", field:"Häufigkeit"}
-        ]
+function renderTable(sheetname){
+    let jsonData = database[sheetname];
+
+    let table = new Tabulator("#cardTable", {
+        height: 300,
+        data: jsonData,
+        layout: "fitColumns",
+        //we use the structure information of the first row, because all rows behave identical
+        columns: Object.entries(jsonData[0])
+            .map(([key, _]) => ({
+                title: key,
+                field: key
+            }))
    });
    
    //trigger an alert message when the row is clicked
    table.on("rowClick", function(e, row){ 
         console.log(row.getData());
-       alert("Row " + row.getData().Name + " Clicked!!!!");
    });
 }

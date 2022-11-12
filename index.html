@@ -18,10 +18,12 @@
             ondragover="allowDrop(event)" 
             onchange="updateListSelection(this, this.selectedIndex)"
             size="10">
-            <!-- No options here - they are added when files are added during runtime-->
+            <!-- No options here - they are populated when files are uploaded during runtim. -->
         </select>
     </div>
 
     <img id="previewImage" height="500">
+
+    <div id="worksheetTabs" class="tab"></div>
     <div id="cardTable"></div>
 </body>
