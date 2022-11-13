@@ -1,7 +1,7 @@
 "use strict";
 
 let database;
-
+let allFiles;
 
 const IMAGE_TYPES = {update: updateImage, extensions:['png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg']}
 const TABLE_TYPES = {update: updateCardTable, extensions:['xlsx']}
@@ -37,9 +37,12 @@ function uploadFiles(event) {
     //delete all old file entries
     const fileList = document.getElementById('filesList');
     removeAllChildNodes(fileList);
+    allFiles = [];
 
     Array.from(event.target.files).forEach(file => { 
         let fileOption = new TempFile(file, URL.createObjectURL(file), file.webkitRelativePath);
+
+        allFiles.push(fileOption);
 
         fileList.appendChild(fileOption);
     });
@@ -158,7 +161,7 @@ function transformTextIntoSvg(sourceCode, callback = null) {
     saveSvgAsImage(URL.createObjectURL(myblob), (dataURI) => {
         console.log(dataURI);
 
-        if(callback != null) {
+        if (callback != null) {
             callback(dataURI);
         }
     });
@@ -191,17 +194,15 @@ function saveSvgAsImage(imageUrl, callback) {
 function generateCards() {
     //iterate over current worksheet
     let currentSheet = database[currentSheetSymbol];
-    let allCards = [];
 
     currentSheet.forEach(row => {
-        let sourceCode = applyStringTransformation(document.getElementById('svgSource').value, row);
-        allCards.push(sourceCode);
+        let sourceCode = applyStringTransformation(document.getElementById('svgSource').value, row, (newSourceCode) => {
+            allCards.push(sourceCode);
+        });
     });
-
-    return allCards;
 }
 
-function applyStringTransformation(string, object) {
+function applyStringTransformation(string, object, callback) {
 
     while(tagExistsInString(string)) {
         let newstring = string;
@@ -219,7 +220,35 @@ function applyStringTransformation(string, object) {
         }
     }
 
-    return string;
+    //edit all XLinks to the local blob dataURI
+    const xlinks = getXLinks(string);
+
+    console.log('found xlinks', xlinks);
+
+    xlinks.forEach(imageFile => {
+        let correspondingFile = allFiles.find(file => file.filePath == imageFile);
+
+        console.log('!!!!!!!!!!!!', correspondingFile);
+
+        let promise = new Promise(function(resolve, reject) {
+            const reader = new FileReader();
+
+            reader.onloadend = function() {
+                resolve(reader.result);
+            }
+
+            reader.readAsDataURL(correspondingFile.file);
+        });
+
+        promise.then(
+            result => {
+                string = string.replaceAll(imageFile, result);
+                console.log('string result!!!!', string);
+                callback(string);
+            },
+            error => console.log(error)
+        )
+    });
 }
 
 function tagExistsInString(string) {
@@ -230,9 +259,10 @@ function tagExistsInString(string) {
 
 function generateSvgPreviewPicture(svgSource, tableRow, callback) {
 
-    transformTextIntoSvg(applyStringTransformation(svgSource, tableRow), (data) => {
-        console.log('data', data);
-        callback(data);
+    applyStringTransformation(svgSource, tableRow, (svgText) => {
+        transformTextIntoSvg(svgText, (data) => {
+            callback(data);
+        });
     });
 }
 
@@ -298,4 +328,9 @@ function promptDownloadArchive(zip) {
         // Force down of the Zip file
         saveAs(content, "archive.zip");
     });
+}
+
+function getXLinks(svgSourceText) {
+    const regex = /(?<=xlink:href=")[^"]+(?=")/g
+    return svgSourceText.match(regex);
 }
