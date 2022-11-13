@@ -27,6 +27,8 @@ class TempFile extends Option{
     }
 }
 
+
+
 function uploadFiles(event) {
 
     Array.from(event.target.files).forEach(file => { 
