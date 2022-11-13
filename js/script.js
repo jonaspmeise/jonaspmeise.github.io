@@ -6,6 +6,8 @@ const IMAGE_TYPES = {update: updateImage, extensions:['png', 'jpg', 'jpeg', 'gif
 const TABLE_TYPES = {update: updateCardTable, extensions:['xlsx']}
 const ALL_TYPES = [IMAGE_TYPES, TABLE_TYPES]
 
+const currentSheetSymbol = Symbol.for('currentSheet');
+
 class TempFile extends Option{
     constructor(file, fileBlob, filePath) {
         super();
@@ -31,10 +33,14 @@ class TempFile extends Option{
 
 function uploadFiles(event) {
 
+    //delete all old file entries
+    const fileList = document.getElementById('filesList');
+    removeAllChildNodes(fileList);
+
     Array.from(event.target.files).forEach(file => { 
         let fileOption = new TempFile(file, URL.createObjectURL(file), file.webkitRelativePath);
 
-        document.getElementById('filesList').appendChild(fileOption);
+        fileList.appendChild(fileOption);
     });
 }
 
@@ -119,6 +125,7 @@ function removeAllChildNodes(parent) {
 //Method to display the data in HTML Table
 function renderTable(sheetname){
     let jsonData = database[sheetname];
+    database[currentSheetSymbol] = jsonData;
 
     let table = new Tabulator("#cardTable", {
         height: 300,
@@ -134,7 +141,7 @@ function renderTable(sheetname){
    
    //trigger an alert message when the row is clicked
    table.on("rowClick", function(e, row){ 
-        console.log(row.getData());
+    generateSvgPreviewPicture(document.getElementById('svgSource').value, row.getData());
    });
 }
 
@@ -147,7 +154,9 @@ function renderSVG(sourceCode) {
         type: 'image/svg+xml'
     });
 
-    saveSvgAsImage(URL.createObjectURL(myblob));
+    saveSvgAsImage(URL.createObjectURL(myblob), (dataURI) => {
+        console.log(dataURI);
+    });
 }
 
 function debounce(func, timeout = 300){
@@ -158,7 +167,7 @@ function debounce(func, timeout = 300){
     };
 }
 
-function saveSvgAsImage(imageUrl) {
+function saveSvgAsImage(imageUrl, callback) {
     const canvas = document.getElementById('svgCanvas');
     const ctx = canvas.getContext('2d');
 
@@ -168,16 +177,52 @@ function saveSvgAsImage(imageUrl) {
         canvas.height = this.height;
         ctx.drawImage(this, 0, 0);
 
-        const downloadableImage = canvas.toDataURL('image/png');
-        console.log(downloadableImage);
-        var aDownloadLink = document.createElement('a');
-        // Add the name of the file to the link
-        aDownloadLink.download = 'canvas_image.png';
-        // Attach the data to the link
-        aDownloadLink.href = downloadableImage;
-        // Get the code to click the download link
-        aDownloadLink.click();
+        callback(canvas.toDataURL('image/png'));
     }
 
     img.src = imageUrl;
+}
+
+function generateCards() {
+    //iterate over current worksheet
+    let currentSheet = database[currentSheetSymbol];
+    let allCards = [];
+
+    currentSheet.forEach(row => {
+        let sourceCode = applyStringTransformation(document.getElementById('svgSource').value, row);
+        allCards.push(sourceCode);
+    });
+
+    return allCards;
+}
+
+function applyStringTransformation(string, object) {
+
+    while(tagExistsInString(string)) {
+        let newstring = string;
+        Object.entries(object).forEach(
+            ([key, value]) => {
+                newstring = newstring.replaceAll(`$(${key})`, value);
+            });
+        
+        console.log(newstring);
+        //if no changes are made, cancel loop
+        if(newstring === string) {
+            break;
+        } else {
+            string = newstring;
+        }
+    }
+
+    return string;
+}
+
+function tagExistsInString(string) {
+
+    const regex = /\$\([^\$\(\)]+\)/g;
+    return !(string.match(regex) === null);
+}
+
+function generateSvgPreviewPicture(svgSource, tableRow) {
+    renderSVG(applyStringTransformation(svgSource, tableRow));
 }
