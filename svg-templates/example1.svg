@@ -1,0 +1,72 @@
+<svg width="900" height="1260" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g>
+        <!--Reference image for DEBUG. Set [visibility="visible"] if you want to debug and see the overlapping design reference-->
+        <!--<image xlink:href="card_layout.png" id="svg_1" height="1260" width="900" opacity="0.2" visibility="visible"/>-->
+    </g>
+    <g><!--GROUP: Information about DESIGN-->
+        <!--Information about ARTWORK-->
+        <image xlink:href="#ARTWORKURL#" x="0" y="0" width="900" height="1260" preserveAspectRatio="xMinYMin slice"/>
+        <!--Information about CARDTEXT BOX-->
+        <image xlink:href="..\card_template\layout\cardtext_box.png" x="-36" y="745"/>
+        <!--Information about TEXTBOX BANNER-->
+        <image xlink:href=".\card_template\layout\textbox_banner.png" x="41" y="37"/>
+        <!--Information about LEVEL SYMBOL-->
+        <image xlink:href=".\card_template\symbols\level_background.png" x="-312" y="-207"/>
+        <!--Information about LEVEL SYMBOL DROPSHADOW-->
+        <image xlink:href=".\card_template\symbols\levelicon_dropshadow.png" x="-312" y="-207"/>
+        <!--Information about CARDBORDER BORDER-->
+        <image xlink:href=".\card_template\GENERATED\card_border_color.png" x="0" y="0"/>
+        <!--Information about CARDBORDER MASK-->
+        <image xlink:href=".\card_template\layout\card_border_texture.png" x="0" y="0"/>
+        <!--Information about CARDBORDER DROPSHADOW-->
+        <image xlink:href=".\card_template\layout\card_dropshadow.png" x="0" y="0"/>
+        <!--Information about FRACTION SYMBOL IN CARDBOX-->
+        <image xlink:href=".\card_template\symbols\fraction_symbols\#REALM#.png" x="354" y="788" opacity="0.3"/>
+        <!--Information about CRYSTAL SYMBOL-->
+        <image xlink:href=".\card_template\symbols\crystals\#CRYSTAL3#.png" x="646" y="74" opacity="#CRYSTAL3_OPACITY#"/>
+        <image xlink:href=".\card_template\symbols\crystals\#CRYSTAL2#.png" x="711" y="74" opacity="#CRYSTAL2_OPACITY#"/>
+        <image xlink:href=".\card_template\symbols\crystals\#CRYSTAL1#.png" x="774" y="74" opacity="#CRYSTAL1_OPACITY#"/>
+        <!--Information about CRYSTAL DROPSHADOW-->
+        <image xlink:href=".\card_template\symbols\crystals\crystals_dropshadow.png" x="-1" y="0"/>
+        <!--Information about HEALTH SYMBOL-->
+        <image xlink:href=".\card_template\symbols\health.png" x="755" y="1114"/>
+        <!--Information about ATTACK SYMBOL-->
+        <image xlink:href=".\card_template\symbols\attack.png" x="47" y="1114"/>
+        <!--Information about RARITY DROPSHADOW-->
+        <image xlink:href=".\card_template\GENERATED\rarity_#RARITY#_dropshadow.png" x="338" y="632"/>
+        <!--Information about RARITY SYMBOL-->
+        <image xlink:href=".\card_template\symbols\rarity_#RARITY#.png" x="353" y="647"/>
+    </g>
+        <g><!--GROUP: Information about TEXT CONTENT-->
+        <!--Information about FIRST TEXT LINE IN CARDBOX-->
+        <text text-anchor="start" font-family="Palatino Linotype" font-size="46" y="820" x="61" fill="#ffffff" visibility="visible">#EFFECT1#</text>
+        <!--Information about SECOND TEXT LINE IN CARDBOX-->
+        <text text-anchor="start" font-family="Palatino Linotype" font-size="46" y="867" x="61" fill="#ffffff" visibility="visible">#EFFECT2#</text>
+        <!--Information about THIRD TEXT LINE IN CARDBOX-->
+        <text text-anchor="start" font-family="Palatino Linotype" font-size="46" y="914" x="61" fill="#ffffff" visibility="visible">#EFFECT3#</text>
+        <!--Information about FOURTH TEXT LINE IN CARDBOX-->
+        <text text-anchor="start" font-family="Palatino Linotype" font-size="46" y="962" x="61" fill="#ffffff" visibility="visible">#EFFECT4#</text>
+        <!--Information about FIFTH TEXT LINE IN CARDBOX-->
+        <text text-anchor="start" font-family="Palatino Linotype" font-size="46" y="1008" x="61" fill="#ffffff" visibility="visible">#EFFECT5#</text>
+        <!--Information about SIXTH TEXT LINE IN CARDBOX-->
+        <text text-anchor="start" font-family="Palatino Linotype" font-size="46" y="1055" x="61" fill="#ffffff" visibility="visible">#EFFECT6#</text>
+        <!--Information about CARDNAME-->
+        <text text-anchor="start" font-family="Palatino Linotype" font-size="64" y="125" x="150" textLength="#NAME_STRETCH_PERCENTAGE#%" lengthAdjust="spacingAndGlyphs" fill="#000000" visibility="visible">#NAME#</text>
+        <!--Information about CARDTYPE AND SUBTYPE-->
+        <text text-anchor="start" font-family="Palatino Linotype" font-size="64" y="1185" x="200" textLength="#NAME_STRETCH_PERCENTAGE#%" lengthAdjust="spacingAndGlyphs" fill="#ffffff" visibility="visible">#CARDTYPE#</text>
+    </g>
+    <g><!--GROUP: Information about NUMBER CONTENT-->
+        <!--Information about HEALTH VALUE-->
+        <text text-anchor="middle" font-family="Palatino Linotype" font-weight="bold" font-size="90" y="1193" x="804" fill="#ffffff" visibility="visible">#HP#</text>
+        <!--Information about ATTACK VALUE-->
+        <text text-anchor="middle" font-family="Palatino Linotype" font-weight="bold" font-size="90" y="1193" x="94" fill="#ffffff" visibility="visible">#ATTACK#</text>
+        <!--Information about LEVEL VALUE-->
+        <text text-anchor="middle" font-family="Palatino Linotype" font-weight="bold" font-size="90" y="137" x="87" fill="#ffffff" visibility="visible">#LEVEL#</text>
+        <!--Information about CRYSTAL1 VALUE-->
+        <text text-anchor="middle" font-family="Palatino Linotype" font-weight="bold" font-size="65" y="123" x="676" fill="#000000" visibility="visible">#COST3#</text>
+        <!--Information about CRYSTAL2 VALUE-->
+        <text text-anchor="middle" font-family="Palatino Linotype" font-weight="bold" font-size="65" y="123" x="740" fill="#000000" visibility="visible">#COST2#</text>
+        <!--Information about CRYSTAL3 VALUE-->
+        <text text-anchor="middle" font-family="Palatino Linotype" font-weight="bold" font-size="65" y="123" x="804" fill="#000000" visibility="visible">#COST1#</text>
+    </g>
+</svg>

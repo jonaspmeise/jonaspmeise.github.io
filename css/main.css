@@ -1,0 +1,7 @@
+#svgSource {
+    position: absolute;
+    right: 0;
+    top: 0;
+    overflow:scroll;
+    white-space: nowrap;
+  }

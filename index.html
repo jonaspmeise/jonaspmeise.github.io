@@ -1,6 +1,7 @@
 <!doctype html>
 <head>
     <link href="css/tabulator.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
     <script src="js/script.js"></script>
     <script src="js/tabulator.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script>
@@ -10,19 +11,27 @@
     <div id="main">
         <input type="file" id="inputFolder"
             webkitdirectory multiple 
-            onchange="uploadFiles(event)">
+            onchange="uploadFiles(event);">
 
         <select id="filesList" 
             multiple 
-            ondrop="drop(event)"
-            ondragover="allowDrop(event)" 
-            onchange="updateListSelection(this, this.selectedIndex)"
+            ondrop="drop(event);"
+            ondragover="allowDrop(event);" 
+            onchange="updateListSelection(this, this.selectedIndex);"
             size="10">
             <!-- No options here - they are populated when files are uploaded during runtim. -->
         </select>
     </div>
 
-    <img id="previewImage" height="500">
+    <div id="center"></div>
+        <img id="previewImage" height="500">
+
+        <textarea placeholder="Enter SVG Syntax" 
+            id="svgSource"
+            rows = 50
+            cols = 40>
+        </textarea>
+    </div>
 
     <div id="worksheetTabs" class="tab"></div>
     <div id="cardTable"></div>

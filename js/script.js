@@ -2,7 +2,6 @@
 
 let database;
 
-
 const IMAGE_TYPES = {update: updateImage, extensions:['png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg']}
 const TABLE_TYPES = {update: updateCardTable, extensions:['xlsx']}
 const ALL_TYPES = [IMAGE_TYPES, TABLE_TYPES]
@@ -51,8 +50,6 @@ function updateElementByExtension(fileExtension) {
     const found = ALL_TYPES.find((singletype) => 
         singletype.extensions.includes(fileExtension)
     );
-
-    console.log(found);
 
     return found?.update;
 }
