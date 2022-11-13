@@ -34,7 +34,13 @@
             id="svgSource"
             rows=50
             cols=70
-            oninput="triggerSVGChange(this.value);"></textarea>
+            oninput="triggerSVGChange(this.value);">
+<svg width="300" height="600" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g>
+        <image xlink:href="$(ArtworkURL)" x="0" y="0" width="300" height="600" preserveAspectRatio="xMinYMin slice"/>
+    <text font-size="46" y="40" x="61" fill="#000000" visibility="visible">$(Name)</text>
+    </g>
+</svg></textarea>
     </div>
 
     <div id="worksheetTabs" class="tab"></div>
