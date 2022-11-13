@@ -2,6 +2,7 @@
 
 let database;
 
+
 const IMAGE_TYPES = {update: updateImage, extensions:['png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg']}
 const TABLE_TYPES = {update: updateCardTable, extensions:['xlsx']}
 const ALL_TYPES = [IMAGE_TYPES, TABLE_TYPES]
@@ -147,15 +148,19 @@ function renderTable(sheetname){
 
 
 //for delayed updating of the SVG image
-let triggerSVGChange = debounce(renderSVG, 500);
+let triggerSVGChange = debounce(transformTextIntoSvg, 500);
 
-function renderSVG(sourceCode) {
+function transformTextIntoSvg(sourceCode, callback = null) {
     const myblob = new Blob([sourceCode], {
         type: 'image/svg+xml'
     });
 
     saveSvgAsImage(URL.createObjectURL(myblob), (dataURI) => {
         console.log(dataURI);
+
+        if(callback != null) {
+            callback(dataURI);
+        }
     });
 }
 
@@ -223,6 +228,74 @@ function tagExistsInString(string) {
     return !(string.match(regex) === null);
 }
 
-function generateSvgPreviewPicture(svgSource, tableRow) {
-    renderSVG(applyStringTransformation(svgSource, tableRow));
+function generateSvgPreviewPicture(svgSource, tableRow, callback) {
+
+    transformTextIntoSvg(applyStringTransformation(svgSource, tableRow), (data) => {
+        console.log('data', data);
+        callback(data);
+    });
+}
+
+function transformWorksheetToImages() {
+    //iterate over worksheet
+    let archive = new Map();
+
+    let readingData = new Promise(function(resolve, reject) {
+        database[currentSheetSymbol].forEach(row => {
+            console.log(row);
+
+            //transform row into svg image
+            let promise = new Promise(function(resolve, reject) {
+                generateSvgPreviewPicture(document.getElementById('svgSource').value, row, (data) => {
+                    console.log(row.Name);
+                    resolve([row.Name, data]);
+                });
+            });
+
+            promise.then(
+                ([key, value]) => {
+                    archive.set(key, value.split('base64,')[1]);
+
+                    if(row === database[currentSheetSymbol].at(-1)) {
+                        console.log('resolved!', archive);
+                        resolve(archive);
+                    }
+                },
+                error => alert(error)
+            );
+        });
+    });
+
+    readingData.then(
+        archive => {
+            console.log(archive);
+
+            let zipArchive = createZipArchive(archive);
+            promptDownloadArchive(zipArchive);
+        },
+        error => console.log(error)
+    )
+}
+
+function createZipArchive(archive) {
+    var zip = new JSZip();
+
+    // Generate a directory within the Zip file structure
+    var imageFolder = zip.folder("generated-images");
+
+    archive.forEach((fileData, fileName) => {
+        imageFolder.file(`${fileName}.png`, fileData, {base64: true});
+    });
+
+    return zip;    
+}
+
+function promptDownloadArchive(zip) {
+    console.log(zip);
+
+    zip.generateAsync({type:"blob"})
+    .then(function(content) {
+        // Force down of the Zip file
+        saveAs(content, "archive.zip");
+    });
 }
