@@ -26,11 +26,14 @@
     <div id="center"></div>
         <img id="previewImage" height="500">
 
+        <canvas id="svgCanvas"></canvas>
+
         <textarea placeholder="Enter SVG Syntax" 
             id="svgSource"
-            rows = 50
-            cols = 40>
-        </textarea>
+            rows=50
+            cols=70
+            value="Test"
+            oninput="triggerSVGChange(this.value);"></textarea>
     </div>
 
     <div id="worksheetTabs" class="tab"></div>
