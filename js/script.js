@@ -158,7 +158,11 @@ function transformTextIntoSvg(sourceCode, callback = null) {
         type: 'image/svg+xml'
     });
 
-    saveSvgAsImage(URL.createObjectURL(myblob), (dataURI) => {
+    //TODO: Hack?
+    let url = 'data:image/svg+xml; charset=utf8, ' + encodeURIComponent(sourceCode);
+
+    //saveSvgAsImage(URL.createObjectURL(myblob), (dataURI) => {
+    saveSvgAsImage(url, (dataURI) => {
         console.log(dataURI);
 
         if (callback != null) {
@@ -180,6 +184,7 @@ function saveSvgAsImage(imageUrl, callback) {
     const ctx = canvas.getContext('2d');
 
     const img = new Image();
+    //img.crossOrigin = "Anonymous";
     img.onload = function() {
         canvas.width = this.width;
         canvas.height = this.height;
