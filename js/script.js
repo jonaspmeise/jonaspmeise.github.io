@@ -208,13 +208,27 @@ function generateCards() {
 }
 
 function applyStringTransformation(string, object, callback) {
-
     while(tagExistsInString(string)) {
         let newstring = string;
         Object.entries(object).forEach(
             ([key, value]) => {
                 newstring = newstring.replaceAll(`$(${key})`, value);
             });
+
+                
+        let booleanExpressions = newstring.matchAll(/\$\{(?<column>.+)==(?<searchValue>.+)\?(?<valueIfTrue>.+):(?<valueIfFalse>.*)\}/gm);
+        Array.from(booleanExpressions).forEach(singleExpression => {
+            const column = singleExpression.groups.column;
+            const searchValue = singleExpression.groups.searchValue;
+
+            console.log(object, column, searchValue, singleExpression[0]);
+
+            if(object[column] === searchValue) {
+                newstring = newstring.replaceAll(singleExpression[0], singleExpression.groups.valueIfTrue);
+            } else {
+                newstring = newstring.replaceAll(singleExpression[0], singleExpression.groups.valueIfFalse);
+            }
+        });
         
         console.log(newstring);
         //if no changes are made, cancel loop
@@ -230,30 +244,34 @@ function applyStringTransformation(string, object, callback) {
 
     console.log('found xlinks', xlinks);
 
-    xlinks.forEach(imageFile => {
-        let correspondingFile = allFiles.find(file => file.filePath == imageFile);
+    if (xlinks === null) {
+        callback(string);
+    } else {
+        xlinks.forEach(imageFile => {
+            let correspondingFile = allFiles.find(file => file.filePath == imageFile);
 
-        console.log('!!!!!!!!!!!!', correspondingFile);
+            console.log('!!!!!!!!!!!!', correspondingFile);
 
-        let promise = new Promise(function(resolve, reject) {
-            const reader = new FileReader();
+            let promise = new Promise(function(resolve, reject) {
+                const reader = new FileReader();
 
-            reader.onloadend = function() {
-                resolve(reader.result);
-            }
+                reader.onloadend = function() {
+                    resolve(reader.result);
+                }
 
-            reader.readAsDataURL(correspondingFile.file);
+                reader.readAsDataURL(correspondingFile.file);
+            });
+
+            promise.then(
+                result => {
+                    string = string.replaceAll(imageFile, result);
+                    console.log('string result!!!!', string);
+                    callback(string);
+                },
+                error => console.log(error)
+            )
         });
-
-        promise.then(
-            result => {
-                string = string.replaceAll(imageFile, result);
-                console.log('string result!!!!', string);
-                callback(string);
-            },
-            error => console.log(error)
-        )
-    });
+    }
 }
 
 function tagExistsInString(string) {
@@ -338,4 +356,8 @@ function promptDownloadArchive(zip) {
 function getXLinks(svgSourceText) {
     const regex = /(?<=xlink:href=")[^"]+(?=")/g
     return svgSourceText.match(regex);
+}
+
+function escapeRegex(string) {
+    return string.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
 }
