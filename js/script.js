@@ -39,6 +39,8 @@ function uploadFiles(event) {
     removeAllChildNodes(fileList);
     allFiles = [];
 
+    console.log(event.target.files);
+
     Array.from(event.target.files).forEach(file => { 
         let fileOption = new TempFile(file, URL.createObjectURL(file), file.webkitRelativePath);
 

@@ -1,0 +1,44 @@
+describe('Unit tests', () => {
+    describe('Model tests', () => {
+        let model, fileList, sheetnames, exampleXLS;
+        beforeEach(() => {
+            model = new Model();
+            fileList = ['123.png', '234.png', 'table.xls', 'readme.txt'];
+            sheetnames = ['Sheet 1', 'Sheet 2'];
+            exampleXLS = {
+                Sheets: {
+                    'Sheet 1': null,
+                    'Sheet 2': null
+                },
+                Sheetnames: sheetnames
+            };
+        });
+
+        it('Model saves a list of files correctly', () => {
+            model.loadFiles(fileList);
+
+            assert.equal(model.files, fileList);
+        });
+
+        it('Model loads a xlsx spreadsheet as a File blob into an internal Object representation', function(done) {
+            let load = sinon.stub(XLSX, 'read').callsFake(() => {
+                return exampleXLS;
+            });
+
+            let sheetToJson = sinon.stub(XLSX.utils, 'sheet_to_json').callsFake(() => {
+                return 'stubbed away';
+            });
+
+            model.loadDatabase(new Blob()).then(() => {
+                load.restore();
+                sheetToJson.restore();
+
+                chai.expect(model.database.Sheetnames).to.equal(sheetnames);
+                chai.
+                done();
+            });
+        });
+
+        it('')
+    });
+});
