@@ -1,8 +1,8 @@
 describe('Utility tests', () => {
-    let utility;
+    let ruleApplier;
 
     beforeEach(() => {
-        utility = new Utility();
+        ruleApplier = new RuleApplier();
     });
 
     describe('Unit tests', () => {
@@ -13,7 +13,7 @@ describe('Utility tests', () => {
 
         function generateTransformationTest(before, after, dataObject, description = null) {
             it((description === null) ? `Model transforms SVG code ${before} correctly` : description, () => {
-                chai.assert.equal(utility.applyRules(before, dataObject), after);
+                chai.assert.equal(ruleApplier.applyRules(before, dataObject), after);
             });
         }
 
