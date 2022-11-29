@@ -1,10 +1,15 @@
-class Model {
+class DataModel {
     constructor() {
         console.log('Created Model...');
+        this._files = [];
     }
 
-    loadFiles(array) {
-        this._files = array;
+    loadFiles(files) {
+        Array.from(files).forEach(file => { 
+            this._files.push(
+                new TemporaryFile(file, URL.createObjectURL(file), file.webkitRelativePath)
+            );
+        });
     }
 
     get files() {

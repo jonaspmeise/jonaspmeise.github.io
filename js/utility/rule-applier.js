@@ -20,7 +20,7 @@ class RuleApplier {
                 })
             );
 
-        //Rule for Conditional Expressions
+        //Rule for Simple Replacement Expressions
         this.rules.push(
             new Rule(
                 `\\$\\{(?<key>${literal}+)\\}`,

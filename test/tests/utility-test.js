@@ -12,7 +12,7 @@ describe('Utility tests', () => {
         // ************
 
         function generateTransformationTest(before, after, dataObject, description = null) {
-            it((description === null) ? `Model transforms SVG code ${before} correctly` : description, () => {
+            it((description === null) ? `Transforms SVG code ${before} correctly` : description, () => {
                 chai.assert.equal(ruleApplier.applyRules(before, dataObject), after);
             });
         }
@@ -41,5 +41,16 @@ describe('Utility tests', () => {
         testElemens.forEach(testElement => {
             generateTransformationTest(testElement.before, testElement.after, dataObject, testElement.description);
         });
+
+        it('rules apply the applicator and call back the handler for each match', () => {        
+            let spyCallback = sinon.spy((oldValue, newValue) => {});
+            let spyApplicator = sinon.spy(() => {return 'applied!'});
+
+            const testRule = new Rule('abc', spyApplicator);
+
+            testRule.evaluate('abc def abc ghi', {}, spyCallback);
+            chai.expect(spyCallback.callCount).to.equal(2);
+            chai.expect(spyApplicator.callCount).to.equal(2);
+        })
     });
 });
