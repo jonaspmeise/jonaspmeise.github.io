@@ -46,6 +46,6 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
+          publish_dir: ./cardcreator-webapp/docs
           enable_jekyll: true
           publish_branch: gh-pages
