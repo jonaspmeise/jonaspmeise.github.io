@@ -1,13 +1,20 @@
-:host {
-    position: fixed;
+.workbar {
     top: 0;
     left: 0;
-    height: 100%;
-    width: 10rem;
+    bottom: 0;
+    width: 260px;
+    padding: 16px;
     background-color: #333;
     color: #fff;
-    display: flex;
+    justify-content: space-between;
     flex-direction: column;
-    padding: 0.5rem;
-    overflow: auto;
+    transition: width 0.3s ease-in-out;
+}
+  
+.workbar.collapsed {
+    width: 50px;
+}
+
+.workbar button {
+    margin-top: auto;
 }

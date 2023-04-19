@@ -4,10 +4,10 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class FileService {
-  private fileList: Map<string, Blob>;
+  private fileList: Map<string, string>;
 
   constructor() {
-    this.fileList = new Map<string, Blob>(); 
+    this.fileList = new Map<string, string>(); 
   }
 
   upload(files: File[] | FileList): Promise<File[]> {
@@ -23,10 +23,8 @@ export class FileService {
           const reader = new FileReader();
 
           reader.onload = () => {
-            const arrayBuffer = reader.result as ArrayBuffer;
-            const blob = new Blob([arrayBuffer], { type: file.type });
-
-            this.fileList.set(file.webkitRelativePath, blob);
+            const content = reader.result as string;
+            this.fileList.set(file.webkitRelativePath, content);
             resolve(file);
           };
 
@@ -42,7 +40,7 @@ export class FileService {
     return Promise.all(promises);
   }
 
-  fetchBlob(fileName: string): Blob | undefined {
+  fetchBase64(fileName: string): string | undefined {
     return this.fileList.get(fileName);
   }
 }

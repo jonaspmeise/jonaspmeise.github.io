@@ -1,3 +1,12 @@
-<div class="mainframe">
-    <img [src]="imageURL">
+<div id="main-container">
+    <div id="image-container">
+        <img id="image-preview" #imageHolder [style.transform]="'scale(' + zoomLevel/100 + ')'" (mousemove)="onMouseMove($event)"/>
+    </div> 
+
+    <div id="zoom-scale">
+        <input type="range" min="50" max="250" [(ngModel)]="zoomLevel" />
+        <span>{{ zoomLevel }}%</span>
+    </div>
+
+    <div class="image-coordinates">{{ cursorPosition }}</div>
 </div>

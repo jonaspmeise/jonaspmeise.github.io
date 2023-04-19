@@ -1,0 +1,19 @@
+.layer-bar {
+    width: 260px;
+    padding: 16px;
+    background-color: #333;
+    color: #fff;
+    transition: width 0.3s ease-in-out;
+}
+  
+.layer-bar.collapsed {
+    width: 50px;
+}
+
+.draggable {
+    cursor: move;
+}
+  
+.draggable:hover {
+    background-color: #ccc;
+}

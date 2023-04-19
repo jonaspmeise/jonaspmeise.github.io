@@ -6,5 +6,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./workbar.component.css']
 })
 export class WorkbarComponent {
-  
+  isCollapsed = false;
+
+  toggleToolbar() {
+    this.isCollapsed = !this.isCollapsed;
+  }
 }

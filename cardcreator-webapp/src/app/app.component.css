@@ -1,15 +1,19 @@
-.app-main-frame {
+.container {
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+}  
+
+#work-bar {
+    float: left;
 }
 
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-    }
-    .app-workbar {
-        width: 100%;
-        height: auto;
-    }
+#layer-bar {
+    float: right;
+}
+
+#mainframe {
+    flex: 3 1 auto;
+    background: lightgreen;
 }

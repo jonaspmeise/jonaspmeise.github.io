@@ -5,12 +5,12 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class FileSelectionService {
-  private fileToRender = new Subject<Blob>();
-  fileToRender$ = this.fileToRender.asObservable();
+  private base64ToRender = new Subject<string>();
+  base64ToRender$ = this.base64ToRender.asObservable();
 
-  selectFile(fileBlob: Blob | undefined) {
-    if(!fileBlob) return;
+  selectContent(content: string | undefined) {
+    if(!content) return;
     
-    this.fileToRender.next(fileBlob);
+    this.base64ToRender.next(content);
   }
 }

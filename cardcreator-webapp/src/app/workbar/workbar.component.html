@@ -1,3 +1,9 @@
-<div class="workbar-container" resizable>
-    <app-file-selector></app-file-selector>
+<div class="workbar" [ngClass]="{'collapsed': isCollapsed}"> 
+    <button (click)="toggleToolbar()">Toggle</button>
+
+    <div id="entries" [hidden]="isCollapsed">
+        <div>
+            <app-file-selector></app-file-selector>
+        </div>
+    </div>
 </div>

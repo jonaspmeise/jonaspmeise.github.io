@@ -1,0 +1,23 @@
+#main-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+}
+
+#image-container {
+    overflow: auto;
+
+    max-height: 90vh;
+    max-width: 90vw;
+}
+
+#image-preview {
+    transform-origin: top left;
+    -drag: none;  
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}

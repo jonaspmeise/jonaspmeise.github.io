@@ -1,0 +1,12 @@
+<div class="layer">
+    <div id="layer-name" (dblclick)="startEditingLayerName()">
+      <h4>{{ layer.name }}</h4>
+    </div>
+    <div class="layer-edit-name" [hidden]="!isEditingLayerName">
+      <input type="text" [(ngModel)]="layer.name" (blur)="stopEditingLayerName()" (keydown.enter)="saveLayerName()">
+    </div>
+    <div class="layer-controls">
+      <label><input type="checkbox" [(ngModel)]="layer.previewVisible">👁️</label>
+      <!-- add any other controls you need for a layer -->
+    </div>
+</div>

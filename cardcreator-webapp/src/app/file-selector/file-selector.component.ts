@@ -28,9 +28,10 @@ export class FileSelectorComponent {
     console.log(selectedFiles);
 
     if(selectedFiles.length === 1) {
-      this.fileSelectionService.selectFile(this.fileService.fetchBlob(selectedFiles[0]));
+      //show / load single file
+      this.fileSelectionService.selectContent(this.fileService.fetchBase64(selectedFiles[0]));
     } else {
-
+      //TODO: something different...
     }
   }
 }

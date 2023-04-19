@@ -1,29 +1,49 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FileSelectionService } from '../services/file-selection.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { DOCUMENT } from '@angular/common';
+import { ImageService } from '../services/image.service';
 
 @Component({
   selector: 'app-mainframe',
   templateUrl: './mainframe.component.html',
   styleUrls: ['./mainframe.component.css']
 })
-export class MainframeComponent implements OnInit{
-  @ViewChild('imagePreview', { static: true }) imagePreview!: ElementRef<HTMLImageElement>;
+export class MainframeComponent implements OnInit {
+  @ViewChild('imageHolder', { static: true }) imageHolder !: ElementRef<HTMLImageElement>;
 
-  imageURL !: SafeUrl;
-  
-  constructor(private fileSelectionService: FileSelectionService, private sanitizer: DomSanitizer) {
+  zoomLevel: number = 100;
+  cursorPosition!: string;
+
+  constructor(private fileSelectionService: FileSelectionService, private imageService: ImageService) {
+    
   }
   
   ngOnInit() {
-    this.fileSelectionService.fileToRender$.subscribe(fileBlob => {
-      if(!fileBlob.type.includes("image")) return;
-
-      console.log(fileBlob.size);
-      const url = URL.createObjectURL(fileBlob);
-      console.log("Temporarily generating blob into ", url);
-
-      this.imageURL = this.sanitizer.bypassSecurityTrustUrl(url);
+    this.fileSelectionService.base64ToRender$.subscribe(base64Content => {
+      this.renderImage(base64Content);
     });
+
+    this.imageService.updateImage$.subscribe(_ => {
+      this.renderImage(this.imageService.generateSVG(true));
+    });
+  }
+
+  renderImage(base64Image: string) {
+    if(!base64Image.includes("image")) return;
+
+    console.log(`Rendering image with size: ${base64Image.length}`);
+    this.imageHolder.nativeElement.src = base64Image;
+  }
+
+  onMouseMove(event: any) {
+    const zoomLevel = this.zoomLevel / 100;
+
+    const ratioX = event.offsetX / event.target.clientWidth;
+    const ratioY = event.offsetY / event.target.clientHeight;
+    const x = ratioX * event.target?.naturalHeight;
+    const y = ratioY * event.target?.naturalWidth;
+
+    this.cursorPosition = `(${x}, ${y})`;
   }
 }
