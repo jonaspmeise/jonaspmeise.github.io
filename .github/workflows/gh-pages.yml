@@ -35,8 +35,10 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm install
+        working-directory: ./cardcreator-webapp
       - name: Build
         run: npm run build:prod
+        working-directory: ./cardcreator-webapp
       - name: Deploy
         if: success()
         uses: peaceiris/actions-gh-pages@v3
