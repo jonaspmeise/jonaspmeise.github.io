@@ -1,17 +1,18 @@
 export class Layer {
     attributes: Map<string, string> = new Map<string, string>();
 
-    constructor(public name: string, public type: string = 'text', public value?: string, public previewVisible: boolean = true) {}
+    constructor(public name: string, public type: string = 'text', public value?: string) {}
 
     convertLayerToString() : string {
         const attributes : string = [...this.attributes]
-        .map((value, key) => `${key}="${value}"`)
-        .join('\n\t');
+            .filter(([_, value]) => value !== 'innerValue')
+            .filter(([key, value]) => (value || key)) 
+            .map(([key, value]) => `${key}="${value}"`)
+            .join('\n\t');
 
         return `<!--${this.name}-->\n` +
-        `<!--previewVisible=${this.previewVisible}-->\n` + 
-        `<${this.type}\n` +
-        attributes + `\n` +
-        `/>`;
+            `<${this.type}\n\t` +
+            attributes + `>\n` +
+            `</${this.type}>`;
     }   
 }

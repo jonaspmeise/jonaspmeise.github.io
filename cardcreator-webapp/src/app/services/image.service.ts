@@ -12,11 +12,16 @@ export class ImageService {
   private updateImage = new Subject<Layer[]>();
   updateImage$ = this.updateImage.asObservable();
 
-  private layers : Layer[] = [new Layer("Testlayer"), new Layer("Layer 2", "text")];;
+  private layers : Layer[] = [new Layer("Testlayer"), new Layer("Layer 2", "text")];
 
   constructor() {
     this.imageWidth = 750; // default width
     this.imageHeight = 1050; // default height
+
+    const testLayer: Layer = new Layer("Testlayer #2");
+    testLayer.attributes.set("color", "red");
+
+    this.layers.push(testLayer);
   }
 
   getImageWidth() {
@@ -40,12 +45,6 @@ export class ImageService {
     const layer = this.layers[dragIndex];
     this.layers.splice(dragIndex, 1);
     this.layers.splice(index, 0, layer);
-
-    this.notifyUpdate();
-  }
-
-  toggleLayerVisibility(index: number) {
-    this.layers[index].previewVisible != this.layers[index].previewVisible;
 
     this.notifyUpdate();
   }
@@ -77,6 +76,12 @@ export class ImageService {
   renameLayer(layer: Layer, name: string) : void {
     console.log(`Set name of ${layer} @ ${this.layers.indexOf(layer)} to: ${name}`);
     layer.name = name;
+
+    this.notifyUpdate();
+  }
+
+  addAttribute(layer: Layer, key: string, value: string) {
+    layer.attributes.set(key, value);
 
     this.notifyUpdate();
   }

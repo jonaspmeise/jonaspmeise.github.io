@@ -14,16 +14,19 @@ export class LayerComponent {
 
   constructor(private imageService: ImageService) {}
 
-  public startEditingLayerName(): void {
-      this.isEditingLayerName = true;
+  public editName(): void {
+    const newName = this.promptNewValue(this.layer.name, this.layer.name);
+
+    if(newName) {
+      this.imageService.renameLayer(this.layer, newName);
+    }
   }
 
-  public stopEditingLayerName(): void {
-      this.isEditingLayerName = false;
+  private promptNewValue(name: string, oldValue: string): string | null {
+    return prompt(`Enter a new value for '${name}':`, this.layer.name);
   }
 
-  public saveLayerName(): void {
-      this.imageService.renameLayer(this.layer, this.layer.name);
-      this.stopEditingLayerName();
+  onChangedRow(key: string, value: string) {
+    this.imageService.addAttribute(this.layer, key, value);
   }
 }

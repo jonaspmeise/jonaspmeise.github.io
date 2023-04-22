@@ -1,10 +1,10 @@
 <div id="main-container">
     <div id="image-container">
-        <img id="image-preview" #imageHolder [style.transform]="'scale(' + zoomLevel/100 + ')'" (mousemove)="onMouseMove($event)"/>
+        <img id="image-preview" [src]="image" #imageHolder [style.transform]="'scale(' + zoomLevel/100 + ')'" (mousemove)="onMouseMove($event)"/>
     </div> 
 
-    <div id="zoom-scale">
-        <input type="range" min="50" max="250" [(ngModel)]="zoomLevel" />
+    <div id="zoom-scale" [hidden]="image == ''">
+        <input type="range" min="10" max="250" [(ngModel)]="zoomLevel" />
         <span>{{ zoomLevel }}%</span>
     </div>
 

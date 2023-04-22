@@ -66,10 +66,6 @@ export class LayerBarComponent implements OnInit {
     this.imageService.deleteLayer(index);
   }
 
-  toggleLayerVisibility(index: number) {
-    this.imageService.toggleLayerVisibility(index);
-  }
-
   renameLayer(layer: Layer) {
     //this.imageService.renameLayer(layer.id, layer.name);
   }

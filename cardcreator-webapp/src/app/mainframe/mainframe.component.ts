@@ -13,6 +13,7 @@ export class MainframeComponent implements OnInit {
   @ViewChild('imageHolder', { static: true }) imageHolder !: ElementRef<HTMLImageElement>;
 
   zoomLevel: number = 100;
+  image!: string;
   cursorPosition!: string;
 
   constructor(private fileSelectionService: FileSelectionService, private imageService: ImageService) {
@@ -33,7 +34,7 @@ export class MainframeComponent implements OnInit {
     if(!base64Image.includes("image")) return;
 
     console.log(`Rendering image with size: ${base64Image.length}`);
-    this.imageHolder.nativeElement.src = base64Image;
+    this.image = base64Image;
   }
 
   onMouseMove(event: any) {

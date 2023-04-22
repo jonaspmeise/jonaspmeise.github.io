@@ -7,12 +7,15 @@
 
 #image-container {
     overflow: auto;
-
-    max-height: 90vh;
-    max-width: 90vw;
 }
 
 #image-preview {
+    display: inline;
+
+    max-height: 80vh;
+    max-width: 80vw;
+
+
     transform-origin: top left;
     -drag: none;  
     user-select: none;
