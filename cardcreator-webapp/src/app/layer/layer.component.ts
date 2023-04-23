@@ -26,7 +26,27 @@ export class LayerComponent {
     return prompt(`Enter a new value for '${name}':`, this.layer.name);
   }
 
-  onChangedRow(key: string, value: string) {
-    this.imageService.addAttribute(this.layer, key, value);
+  onChangedRow(oldKey: string, oldValue: string, keyRef: any, valueRef: any) {
+    const newKey = "b";
+    const newValue = "a";
+
+    console.log(keyRef, valueRef);
+
+    return;
+
+    if (oldKey !== newKey) {
+      if (this.layer.attributes.has(newKey)) {
+        alert('A key with that name already exists.');
+        return;
+      }
+
+      this.imageService.removeAttribute(this.layer, oldKey, oldValue);
+    }
+
+    this.imageService.addAttribute(this.layer, newKey, newValue);
+  }
+
+  deleteRow(key: string, value: string) {
+    this.imageService.removeAttribute(this.layer, key, value);
   }
 }

@@ -66,10 +66,6 @@ export class LayerBarComponent implements OnInit {
     this.imageService.deleteLayer(index);
   }
 
-  renameLayer(layer: Layer) {
-    //this.imageService.renameLayer(layer.id, layer.name);
-  }
-
   toggleToolbar() {
     this.isCollapsed = !this.isCollapsed;
   }

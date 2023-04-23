@@ -3,13 +3,18 @@
       <h4 (click)="editName()">{{ layer.name }}</h4>
     </div>
     <div class="layer-controls">
-      <tr *ngFor="let item of layer.attributes | keyvalue">
+      <tr *ngFor="let item of layer.sortedAttributes()">
+        <button (click)="deleteRow(item[0], item[1])">🗑️</button>
         <td>
-          <input [(ngModel)]="item.key" (keyup.enter)="onChangedRow(item.key, item.value)">
+          <input [(ngModel)]="item[0]" 
+            (blur)="onChangedRow(item[0], item[1], $event.target, item[1])" 
+            (keyup.enter)="onChangedRow(item[0], item[1], $event.target, item[1])">
         </td>
         <td>:</td>
         <td>
-          <input [(ngModel)]="item.value" (keyup.enter)="onChangedRow(item.key, item.value)">
+          <input [(ngModel)]="item[1]" 
+            (blur)="onChangedRow(item[0], item[1], item[0], $event.target)"
+            (keyup.enter)="onChangedRow(item[0], item[1], item[0], $event.target)">
         </td>
       </tr>
     </div>

@@ -85,4 +85,12 @@ export class ImageService {
 
     this.notifyUpdate();
   }
+
+  removeAttribute(layer: Layer, key: string, value: string) {
+    if(layer.attributes.get(key) !== value) return;
+
+    layer.attributes.delete(key);
+
+    this.notifyUpdate();
+  }
 }

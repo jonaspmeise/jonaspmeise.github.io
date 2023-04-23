@@ -1,7 +1,9 @@
 export class Layer {
     attributes: Map<string, string> = new Map<string, string>();
 
-    constructor(public name: string, public type: string = 'text', public value?: string) {}
+    constructor(public name: string, public type: string = 'text', public value?: string) {
+        this.attributes.set("", "");
+    }
 
     convertLayerToString() : string {
         const attributes : string = [...this.attributes]
@@ -15,4 +17,8 @@ export class Layer {
             attributes + `>\n` +
             `</${this.type}>`;
     }   
+
+    sortedAttributes(): [string, string][] {
+        return Array.from(this.attributes.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+    }
 }
