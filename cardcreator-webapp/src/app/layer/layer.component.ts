@@ -33,4 +33,12 @@ export class LayerComponent {
   deleteRow(key: string, value: string) {
     this.imageService.removeAttribute(this.layer, key, value);
   }
+
+  deleteLayer() {
+    this.imageService.removeLayer(this.layer);
+  }
+
+  onChangedType(type: string) {
+    this.imageService.notifyUpdate();
+  }
 }

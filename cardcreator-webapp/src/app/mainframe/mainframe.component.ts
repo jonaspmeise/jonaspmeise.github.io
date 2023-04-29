@@ -1,8 +1,7 @@
 import { Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FileSelectionService } from '../services/file-selection.service';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { DOCUMENT } from '@angular/common';
 import { ImageService } from '../services/image.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-mainframe',
@@ -13,10 +12,10 @@ export class MainframeComponent implements OnInit {
   @ViewChild('imageHolder', { static: true }) imageHolder !: ElementRef<HTMLImageElement>;
 
   zoomLevel: number = 100;
-  image!: string;
+  image!: SafeResourceUrl;
   cursorPosition!: string;
 
-  constructor(private fileSelectionService: FileSelectionService, private imageService: ImageService) {
+  constructor(private fileSelectionService: FileSelectionService, private imageService: ImageService, private sanitizer: DomSanitizer) {
     
   }
   
@@ -31,10 +30,11 @@ export class MainframeComponent implements OnInit {
   }
 
   renderImage(base64Image: string) {
+    console.log(`I'm supposed to render image ${base64Image}`);
     if(!base64Image.includes("image")) return;
 
     console.log(`Rendering image with size: ${base64Image.length}`);
-    this.image = base64Image;
+    this.image = this.sanitizer.bypassSecurityTrustResourceUrl(base64Image);
   }
 
   onMouseMove(event: any) {

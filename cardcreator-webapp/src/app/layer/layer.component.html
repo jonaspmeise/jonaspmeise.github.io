@@ -1,4 +1,14 @@
-<div id="layer-name" (dblclick)="editName()">{{ layer.name }}</div>
+<div class="layer-head">
+  <select [(ngModel)]="layer.type" (change)="onChangedType(layer.type)">
+    <option value="image">Image</option>
+    <option value="text">Text</option>
+  </select>
+
+  <div id="layer-name" (dblclick)="editName()"><b>{{ layer.name }}</b></div>
+
+  <button (click)="deleteLayer()">🗑️</button>  
+</div>
+
 <div class="layer">
     <div class="layer-controls">
       <tr *ngFor="let item of layer.attributes | keyvalue">

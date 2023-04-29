@@ -55,6 +55,13 @@ export class ImageService {
     this.notifyUpdate();
   }
 
+  removeLayer(layer: Layer) {
+    console.log(this.layers.indexOf(layer))
+    this.layers.splice(this.layers.indexOf(layer), 1) 
+  
+    this.notifyUpdate();
+  }
+
   generateSVG(encode: boolean = false): string {
     const svgCode = `<svg width="${this.imageWidth}" height="${this.imageHeight}" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       ${this.layers.map(layer => layer.convertLayerToString()).join('\n')}
@@ -62,11 +69,15 @@ export class ImageService {
 
     console.log(`Generated SVG-code: ${svgCode}`);
 
-    return encode ? 'data:image/svg+xml; charset=utf8, ' + encodeURIComponent(svgCode) : svgCode;
+    return encode ? 'data:image/svg+xml;charset=utf8,' + encodeURIComponent(svgCode) : svgCode;
   }
 
   getLayers(): Layer[] {
     return this.layers;
+  }
+
+  addLayer(layer: Layer) {
+    this.layers.push(layer);
   }
 
   notifyUpdate() {

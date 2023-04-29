@@ -1,0 +1,14 @@
+<svg width="750" height="1050" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <!--Testlayer-->
+    <text>
+    undefined
+    </text>
+    <!--Layer 2-->
+    <text value="text">
+    text
+    </text>
+    <!--Testlayer #2-->
+    <text color="red">
+    undefined
+    </text>
+</svg>
