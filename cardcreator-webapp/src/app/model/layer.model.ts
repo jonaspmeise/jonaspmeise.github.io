@@ -6,19 +6,17 @@ export class Layer {
     }
 
     convertLayerToString() : string {
-        const attributes : string = [...this.attributes]
-            .filter(([_, value]) => value !== 'innerValue')
+        const normalAttributes : string = [...this.attributes]
+            .filter(([key, _]) => key !== '')
+            .filter(([_, value]) => value !== 'value')
             .filter(([key, value]) => (value || key)) 
             .map(([key, value]) => `${key}="${value}"`)
             .join('\n\t');
 
         return `<!--${this.name}-->\n` +
             `<${this.type}\n\t` +
-            attributes + `>\n` +
+            normalAttributes + `>\n` +
+            this.attributes.get('value') + `\n` +
             `</${this.type}>`;
-    }   
-
-    sortedAttributes(): [string, string][] {
-        return Array.from(this.attributes.entries()).sort((a, b) => a[0].localeCompare(b[0]));
-    }
+    } 
 }

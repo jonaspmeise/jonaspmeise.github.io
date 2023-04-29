@@ -87,9 +87,8 @@ export class ImageService {
   }
 
   removeAttribute(layer: Layer, key: string, value: string) {
-    if(layer.attributes.get(key) !== value) return;
-
     layer.attributes.delete(key);
+    layer.attributes.set("", "");
 
     this.notifyUpdate();
   }
